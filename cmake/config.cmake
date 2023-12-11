@@ -154,7 +154,7 @@ set(USE_MICRO_STANDALONE_RUNTIME OFF)
 # - OFF: disable llvm, note this will disable CPU codegen
 #        which is needed for most cases
 # - /path/to/llvm-config: enable specific LLVM when multiple llvm-dev is available.
-set(USE_LLVM OFF)
+set(USE_LLVM "/opt/homebrew/opt/llvm/bin/llvm-config --link-static")
 
 # Whether use MLIR to help analyze, requires USE_LLVM is enabled
 # Possible values: ON/OFF
@@ -369,7 +369,11 @@ set(USE_BNNS OFF)
 # library member to be used, and some of such library members (object files) may
 # not be included in the final executable. This would make the corresponding
 # runtime functions to be unavailable to the program.
-set(BUILD_STATIC_RUNTIME OFF)
+set(BUILD_STATIC_RUNTIME ON)
+
+# Set the path to the zstd library and include directory
+set(ZSTD_LIBRARY "/opt/homebrew/opt/zstd/lib")
+set(ZSTD_INCLUDE_DIR "/opt/homebrew/opt/zstd/include")
 
 # Caches the build so that building is faster when switching between branches.
 # If you switch branches, build and then encounter a linking error, you may
@@ -434,3 +438,6 @@ set(USE_UMA OFF)
 
 # Set custom Alloc Alignment for device allocated memory ndarray points to
 set(USE_KALLOC_ALIGNMENT 64)
+
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/opt/homebrew/opt/llvm/lib/c++ -Wl,-rpath,/opt/homebrew/opt/llvm/lib/c++ -lc++abi")
+
