@@ -1,0 +1,22 @@
+name: Fork PR source checks
+
+# The upstream TVM matrix in main.yml is intentionally restricted to apache/tvm.
+# This lightweight job covers Python source syntax in this fork; full native
+# runtime and device tests still belong to the upstream/build-specific CI.
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compile TVM Python sources and tests
+        run: python -m compileall -q python tests/python
